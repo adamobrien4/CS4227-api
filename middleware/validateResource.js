@@ -6,6 +6,7 @@ const validateResourceMW = (resourceSchema, resourceType = 'body') => async (
   next
 ) => {
   const resource = req[resourceType];
+  console.log(resource);
   try {
     await resourceSchema.validate(resource);
 

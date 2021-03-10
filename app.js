@@ -4,8 +4,11 @@ const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
 const customerRouter = require('./routes/customer');
+const restaurantRouter = require('./routes/restaurant');
 
 const app = express();
+
+const { User } = require('./models/User');
 
 // Swagger Setup
 const swaggerDefinition = {
@@ -52,10 +55,24 @@ app.use(function (req, res, next) {
 });
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.use('/customer', customerRouter);
+app.use('/customers', customerRouter);
+app.use('/restaurant', restaurantRouter);
 
-app.get('/', (req, res) => {
-  res.json('api live');
+app.get('/ping', (req, res) => {
+  res.json('API Available');
+});
+
+app.post('/login', (req, res) => {
+  User.findOne({
+    email: req.body.email.toLowerCase(),
+    password: req.body.password,
+  }).exec((err, user) => {
+    if (err) {
+      return res.status(500).json('user_not_found');
+    }
+
+    return res.json(user);
+  });
 });
 
 module.exports = app;

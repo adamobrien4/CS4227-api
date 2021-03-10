@@ -32,6 +32,7 @@ const RestaurantOwner = User.discriminator('restaurantOwner', new Schema({}));
 const DeliveryDriver = User.discriminator('driver', new Schema({}));
 
 module.exports = {
+  User,
   Customer,
   RestaurantOwner,
   DeliveryDriver,
