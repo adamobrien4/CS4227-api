@@ -55,7 +55,7 @@ app.use(function (req, res, next) {
 });
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.use('/customers', customerRouter);
+app.use('/user', customerRouter);
 app.use('/restaurant', restaurantRouter);
 
 app.get('/ping', (req, res) => {

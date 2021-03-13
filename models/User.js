@@ -21,6 +21,7 @@ const User = mongoose.model(
       },
       address: {
         type: String,
+        default: 'Unset Address',
       },
     },
     userOptions

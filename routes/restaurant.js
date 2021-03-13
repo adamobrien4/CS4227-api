@@ -15,15 +15,13 @@ const RestaurantSchema = require('../schema/restaurant');
  *        - Restaurant
  */
 router.get('/', (req, res) => {
-  Restaurant.find({})
-    .populate('menu')
-    .exec((err, docs) => {
-      if (err) {
-        return res.status(500).json('error_retrieving_restaurants');
-      }
+  Restaurant.find({}).exec((err, docs) => {
+    if (err) {
+      return res.status(500).json('error_retrieving_restaurants');
+    }
 
-      return res.json({ restaurants: docs });
-    });
+    return res.json(docs);
+  });
 });
 
 router.post('/addtest', (req, res) => {
