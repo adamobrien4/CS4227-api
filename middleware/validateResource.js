@@ -6,7 +6,6 @@ const validateResourceMW = (resourceSchema, resourceType = 'body') => async (
   next
 ) => {
   const resource = req[resourceType];
-  console.log(resource);
   try {
     await resourceSchema.validate(resource);
 
@@ -15,6 +14,7 @@ const validateResourceMW = (resourceSchema, resourceType = 'body') => async (
 
     next();
   } catch (e) {
+    console.log(e);
     res.status(400).json({ error: e.errors.join(', ') });
   }
 };

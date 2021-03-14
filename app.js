@@ -5,6 +5,8 @@ const swaggerUi = require('swagger-ui-express');
 
 const customerRouter = require('./routes/customer');
 const restaurantRouter = require('./routes/restaurant');
+const menuRouter = require('./routes/menu');
+const orderRouter = require('./routes/order');
 
 const app = express();
 
@@ -57,6 +59,8 @@ app.use(function (req, res, next) {
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/user', customerRouter);
 app.use('/restaurant', restaurantRouter);
+app.use('/menu', menuRouter);
+app.use('/order', orderRouter);
 
 app.get('/ping', (req, res) => {
   res.json('API Available');
