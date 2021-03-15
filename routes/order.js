@@ -49,12 +49,14 @@ router.post('/add', validateResource(OrderSchema.add), (req, res) => {
   orderItems = orderItems.map((item) => item.replace(new RegExp('"', 'g'), ''));
 
   let orderDetails = {
+    customer: req.body.customer,
     restaurant: req.body.restaurant,
     address: req.body.address,
     foodCost: req.body.foodCost,
     deliveryCost: req.body.deliveryCost,
     totalCost: req.body.totalCost,
     orderItems: orderItems,
+    created_at: new Date(),
   };
 
   if (req.body.discountCode) {
@@ -68,6 +70,7 @@ router.post('/add', validateResource(OrderSchema.add), (req, res) => {
 
   new Order(orderDetails).save((err, doc) => {
     if (err) {
+      console.log(err);
       return res.status(500).json('Could not add order');
     }
 
@@ -94,6 +97,27 @@ router.post('/edit', validateResource(OrderSchema.add), (req, res) => {
     }
 
     return res.json(doc);
+  });
+});
+
+router.post('/pay', validateResource(OrderSchema.pay), (req, res) => {
+  console.log(req.body);
+  Order.updateOne(
+    {
+      customer: req.body.customer,
+      restaurant: req.body.restaurant,
+      status: 'pending_payment',
+    },
+    {
+      status: 'pending',
+      paid_at: Date.now(),
+    }
+  ).exec((err, doc) => {
+    if (err) {
+      return res.status(500).json('error_retrieving_order');
+    }
+
+    return res.json('Order Paid');
   });
 });
 

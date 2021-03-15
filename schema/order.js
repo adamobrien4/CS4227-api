@@ -20,6 +20,10 @@ const get = yup.object({
 
 // TODO: More details
 const add = yup.object({
+  customer: yup
+    .string()
+    .objectId('Customer ID is not valid')
+    .required('Must specify a customer ID'),
   restaurant: yup
     .string()
     .objectId('Restaurant ID is not valid')
@@ -33,7 +37,19 @@ const add = yup.object({
   orderItems: yup.array(yup.string()),
 });
 
+const pay = yup.object({
+  customer: yup
+    .string()
+    .required('Must specify a customer ID')
+    .objectId('Customer ID is not valid'),
+  restaurant: yup
+    .string()
+    .required('Must specify a restaurant ID')
+    .objectId('Restaurant ID is not valid'),
+});
+
 module.exports = {
   get,
   add,
+  pay,
 };

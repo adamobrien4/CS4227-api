@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const orderSchema = new Schema({
+  customer: {
+    type: mongoose.Types.ObjectId,
+    required: true,
+  },
   driver: {
     type: mongoose.Types.ObjectId,
   },
@@ -39,6 +43,13 @@ const orderSchema = new Schema({
   },
   orderItems: {
     type: [String],
+  },
+  created_at: {
+    type: Date,
+    default: Date.now(),
+  },
+  paid_at: {
+    type: Date,
   },
 });
 
