@@ -7,6 +7,7 @@ const customerRouter = require('./routes/customer');
 const restaurantRouter = require('./routes/restaurant');
 const menuRouter = require('./routes/menu');
 const orderRouter = require('./routes/order');
+const discountRouter = require('./routes/discount');
 
 const app = express();
 
@@ -61,6 +62,7 @@ app.use('/user', customerRouter);
 app.use('/restaurant', restaurantRouter);
 app.use('/menu', menuRouter);
 app.use('/order', orderRouter);
+app.use('/discount', discountRouter);
 
 app.get('/ping', (req, res) => {
   res.json('API Available');
