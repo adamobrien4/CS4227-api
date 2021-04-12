@@ -1,0 +1,460 @@
+swagger: '2.0'
+info:
+  description: 'This is the API for our CS4227 Food Delivery Application.'
+  version: '1.0.0'
+  title: 'Food Delivery Application'
+  license:
+    name: 'Apache 2.0'
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+host: 'fypassistance.herokuapp.com'
+basePath: '/'
+tags:
+  - name: 'Customer'
+    description: 'Customer endpoint'
+  - name: 'Discount'
+    description: 'Discount endpoint'
+  - name: 'Menu'
+    description: 'Menu endpoint'
+  - name: 'Order'
+    description: 'Order endpoint'
+  - name: 'Restaurant'
+    description: 'Restaurant endpoint'
+schemes:
+  - 'https'
+paths:
+  /customer/{id}:
+    get:
+      summary: 'Retrieve a customer from the database using their _id'
+      tags:
+        - 'Customer'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'path'
+          name: 'id'
+          type: 'string'
+          required: true
+      responses:
+        '200':
+          description: 'Success'
+        '403':
+          description: 'User does not have permission to access this resource'
+        '500':
+          description: 'An error occurred while processing the request'
+    delete:
+      summary: 'Deletes a user from the database'
+      tags:
+        - 'Customer'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'path'
+          name: 'id'
+          type: 'string'
+          required: true
+      responses:
+        '200':
+          description: 'Customer Deleted'
+        '500':
+          description: 'An error occurred while processing the request'
+  /customer/add:
+    post:
+      summary: ''
+      tags:
+        - 'Customer'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      responses:
+        '200':
+          description: 'Customer Added'
+        '400':
+          description: 'User request was malformed'
+        '500':
+          description: 'An error occurred while processing the request'
+  /discount/{code}:
+    get:
+      summary: 'Retrieve a discount from the database'
+      tags:
+        - 'Discount'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'path'
+          name: 'code'
+          type: 'string'
+          required: true
+      responses:
+        '200':
+          description: 'Customer Added'
+        '400':
+          description: 'User request was malformed'
+        '500':
+          description: 'An error occurred while processing the request'
+  /menu/{id}:
+    get:
+      summary: 'Retrieve a menu from the database'
+      tags:
+        - 'Menu'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'path'
+          name: 'id'
+          type: 'string'
+          required: true
+      responses:
+        '200':
+          description: 'Menu retrieved sucessfully'
+          schema:
+            $ref: '#/definitions/Menu'
+        '400':
+          description: 'User request was malformed'
+        '500':
+          description: 'An error occurred while processing the request'
+    delete:
+      summary: 'Delete a menu from the database'
+      tags:
+        - 'Menu'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'path'
+          name: 'id'
+          type: 'string'
+          required: true
+      responses:
+        '200':
+          description: 'Menu sucessfully deleted'
+        '500':
+          description: 'An error occurred while processing the request'
+  /order/{menuId}:
+    get:
+      summary: 'Retrieve an order from the database'
+      tags:
+        - 'Menu'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'path'
+          name: 'menuId'
+          type: 'string'
+          required: true
+      responses:
+        '200':
+          description: 'Order sucessfully retrieved from the database'
+        '500':
+          description: 'An error occurred while processing the request'
+  /order/add:
+    post:
+      summary: 'Add a new order to the database'
+      tags:
+        - 'Order'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      responses:
+        '200':
+          description: 'Order Added'
+        '500':
+          description: 'An error occurred while processing the request'
+  /order/edit/{menuId}:
+    post:
+      summary: 'Edit an existing order'
+      tags:
+        - 'Order'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'path'
+          name: 'menuId'
+          type: 'string'
+          required: true
+      responses:
+        '200':
+          description: 'Order updated'
+          schema:
+            $ref: '#/definitions/Order'
+        '500':
+          description: 'An error occurred while processing the request'
+  /order/pay:
+    post:
+      summary: 'Update an order to paid'
+      tags:
+        - 'Order'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: body
+          name: 'body'
+          description: 'Update order to paid'
+          schema:
+            type: 'object'
+            required:
+              - 'customer'
+              - 'restaurant'
+            properties:
+              customer:
+                type: 'string'
+                format: 'ObjectId'
+              restaurant:
+                type: 'string'
+                format: 'ObjectId'
+      responses:
+        '200':
+          description: 'Order Paid'
+        '500':
+          description: 'An error occurred while processing the request'
+  /restaurant:
+    get:
+      summary: 'Retrieve all restaurants from the database'
+      tags:
+        - 'Restaurant'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      responses:
+        '200':
+          description: 'List of restaurants'
+          schema:
+            type: 'array'
+            items:
+              $ref: '#/definitions/Restaurant'
+        '500':
+          description: 'An error occurred while processing the request'
+  /restaurant/{restaurantId}:
+    delete:
+      summary: 'Deletes a restaurant from the database'
+      tags:
+        - 'Restaurant'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'path'
+          name: 'restaurantId'
+          type: 'string'
+          required: true
+      responses:
+        '200':
+          description: 'Restaurant Deleted'
+        '500':
+          description: 'An error occurred while processing the request'
+  /restaurant/add:
+    post:
+      summary: 'Add a new restaurant to the database'
+      tags:
+        - 'Restaurant'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: body
+          name: 'body'
+          description: 'Add a new restaurant to the database'
+          schema:
+            type: 'object'
+            required:
+              - 'name'
+              - 'genre'
+            properties:
+              name:
+                type: 'string'
+              genre:
+                type: 'string'
+      responses:
+        '200':
+          description: 'Restaurant Added'
+        '500':
+          description: 'An error occurred while processing the request'
+definitions:
+  Discount:
+    type: 'object'
+    properties:
+      _id:
+        type: 'string'
+        format: 'ObjectId'
+        example: 'ObjectId(a2d85a9ca4ca4a29a62a1b7c0d49851a)'
+      amount:
+        type: 'number'
+        example: '15'
+        description: 'Discount percentage'
+      code:
+        type: 'string'
+        example: 'FOOD15'
+      type:
+        type: 'number'
+        description: 'Discount is for 0 - \"Food\" or 1 - "Delivery\"'
+  DrinkItem:
+    type: 'object'
+    properties:
+      _id:
+        type: 'string'
+        format: 'ObjectId'
+        example: 'ObjectId(a2d85a9ca4caa2a621b7c0d49851a)'
+      name:
+        type: 'string'
+        example: 'Red Wine'
+      price:
+        type: 'number'
+        example: '17.99'
+  FoodItem:
+    type: 'object'
+    properties:
+      _id:
+        type: 'string'
+        format: 'ObjectId'
+        example: 'ObjectId(a2d85a9ca4caa29a62a1b7c0d49851a)'
+      name:
+        type: 'string'
+        example: 'Signature Burger'
+      allergens:
+        type: 'array'
+        items:
+          type: 'string'
+          example: 'Wheat'
+      price:
+        type: 'number'
+        example: '15.99'
+  Menu:
+    type: 'object'
+    properties:
+      _id:
+        type: 'string'
+        format: 'ObjectId'
+        example: 'ObjectId(a2d85a9ca4ca-4a29a62a1b7c0d49851a)'
+      restaurant:
+        type: 'string'
+        format: 'ObjectId'
+      name:
+        type: 'string'
+        example: 'Evening Menu'
+      main_course:
+        type: 'array'
+        items:
+          $ref: '#/definitions/FoodItem'
+      dessert:
+        type: 'array'
+        items:
+          $ref: '#/definitions/FoodItem'
+      sides:
+        type: 'array'
+        items:
+          $ref: '#/definitions/FoodItem'
+      drinks:
+        type: 'array'
+        items:
+          $ref: '#/definitions/DrinkItem'
+  Order:
+    type: 'object'
+    properties:
+      _id:
+        type: 'string'
+        format: 'ObjectId'
+        example: 'ObjectId(a2d85a9c-a4ca-4a29-a62a-1b7c0d49851a)'
+      customer:
+        type: 'string'
+        format: 'ObjectId'
+      driver:
+        type: 'string'
+        format: 'ObjectId'
+      restaurant:
+        type: 'string'
+        format: 'ObjectId'
+      status:
+        type: 'string'
+        enum:
+          - 'pending_payment'
+          - 'pending'
+          - 'completed'
+      address:
+        type: 'string'
+        example: '5, Bar Street, Limerick'
+      totalCost:
+        type: 'number'
+        example: '23.55'
+      foodCost:
+        type: 'number'
+        example: '26.55'
+      deliveryCost:
+        type: 'number'
+        example: '2.00'
+      discountCode:
+        type: 'string'
+        example: 'FOOD15'
+      discountAmount:
+        type: 'number'
+        example: '1.50'
+      orderItems:
+        type: 'array'
+        items:
+          type: 'string'
+        example: '[Premium Burger * 2, Large Fanta * 1, Chips Portion * 4]'
+      created_at:
+        type: 'string'
+        format: 'date-time'
+        example: '2021-03-09T15:20:18.569+00:00'
+      paid_at:
+        type: 'string'
+        format: 'date-time'
+        example: '2021-03-09T15:22:01.569+00:00'
+  Restaurant:
+    type: 'object'
+    properties:
+      _id:
+        type: 'string'
+        format: 'ObjectId'
+        example: 'ObjectId(a2d85a9c-a4ca-4a29-a62a-1b7c0d49851a)'
+      name:
+        type: 'string'
+        example: 'Gleesons Bar and Restaurant'
+      genre:
+        type: 'string'
+        example: 'Fast Food'
+      menu:
+        type: 'string'
+        format: 'ObjectId'
+      type:
+        type: 'string'
+        enum:
+          - 'Family_Friendly'
+          - 'Over_18'
+          - 'Verified_Only'
+  User:
+    type: 'object'
+    properties:
+      _id:
+        type: 'string'
+        format: 'ObjectId'
+        example: 'ObjectId(a2d85a9c-a4ca-4a29-a62a-1b7c0d49851a)'
+      email:
+        type: 'string'
+        format: 'email'
+        example: 'user@example.com'
+      password:
+        type: 'string'
+        example: 'password_123'
+      address:
+        type: 'string'
+        example: '5, Bar Street, Limerick'

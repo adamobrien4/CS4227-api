@@ -5,19 +5,6 @@ const validateResource = require('../middleware/validateResource');
 
 const schema = require('../schema/customer');
 
-/**
- * @swagger
- *  /customer/{id}:
- *    get:
- *      summary: Retrieve a customer from the database using their _id
- *      parameters:
- *        - in: path
- *          name: id
- *          schema:
- *            type: string
- *            example: 5fd0e0dfd7ee5227093099a7
- *          required: true
- */
 router.get('/:id', (req, res) => {
   Customer.findOne({ _id: req.params.id })
     .select('email password address')

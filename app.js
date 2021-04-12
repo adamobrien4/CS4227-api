@@ -1,7 +1,7 @@
 const express = require('express');
 require('dotenv').config();
-const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
 
 const customerRouter = require('./routes/customer');
 const restaurantRouter = require('./routes/restaurant');
@@ -38,12 +38,7 @@ const swaggerDefinition = {
   ],
 };
 
-const swaggerOptions = {
-  swaggerDefinition,
-  // Paths to files containing OpenAPI definitions
-  apis: ['./routes/*.js'],
-};
-const swaggerSpec = swaggerJSDoc(swaggerOptions);
+const swaggerDoc = YAML.load('./SwaggerDefinitions.yaml');
 
 app.use(express.json());
 
@@ -57,7 +52,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 app.use('/user', customerRouter);
 app.use('/restaurant', restaurantRouter);
 app.use('/menu', menuRouter);

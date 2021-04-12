@@ -14,6 +14,10 @@ const restaurantSchema = new Schema({
     type: mongoose.Types.ObjectId,
     ref: 'Menu',
   },
+  type: {
+    type: String,
+    enum: ['Family_Friendly', 'Over_18', 'Verified_Only'],
+  },
 });
 
 const Restaurant = mongoose.model('Restaurant', restaurantSchema);
