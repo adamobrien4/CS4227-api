@@ -6,14 +6,6 @@ const validateResource = require('../middleware/validateResource');
 
 const OrderSchema = require('../schema/order');
 
-/**
- * @swagger
- *  /order{id}:
- *    get:
- *      summary: Retrieve an order from the database
- *      tags:
- *        - Order
- */
 router.get(
   '/:menuId',
   validateResource(OrderSchema.get, 'params'),
@@ -28,14 +20,6 @@ router.get(
   }
 );
 
-/**
- * @swagger
- *  /order/add:
- *    post:
- *      summary: Add a new order
- *      tags:
- *        - Order
- */
 router.post('/add', validateResource(OrderSchema.add), (req, res) => {
   console.log(req.body);
 
@@ -82,14 +66,6 @@ router.post('/add', validateResource(OrderSchema.add), (req, res) => {
   });
 });
 
-/**
- * @swagger
- *  /order/edit:
- *    post:
- *      summary: Retrieve an order from the database
- *      tags:
- *        - Order
- */
 router.post('/edit', validateResource(OrderSchema.add), (req, res) => {
   Menu.findOne({ _id: req.params.menuId }).exec((err, doc) => {
     if (err) {

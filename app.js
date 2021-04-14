@@ -4,6 +4,7 @@ const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 
 const customerRouter = require('./routes/customer');
+const ownerRouter = require('./routes/owner');
 const restaurantRouter = require('./routes/restaurant');
 const menuRouter = require('./routes/menu');
 const orderRouter = require('./routes/order');
@@ -12,31 +13,6 @@ const discountRouter = require('./routes/discount');
 const app = express();
 
 const { User } = require('./models/User');
-
-// Swagger Setup
-const swaggerDefinition = {
-  openapi: '3.0.0',
-  info: {
-    title: 'CS4227 Design Pattern Project',
-    version: '1.0.0',
-    description:
-      'This is a REST API application made with Express. It serves as a data server for the CS4227 Design Project.',
-    license: {
-      name: 'Licensed Under MIT',
-      url: 'https://spdx.org/licenses/MIT.html',
-    },
-    contact: {
-      name: 'CS4227 Design Project API',
-      url: 'http://localhost:5000/',
-    },
-  },
-  servers: [
-    {
-      url: 'http://localhost:5000',
-      description: 'Development server',
-    },
-  ],
-};
 
 const swaggerDoc = YAML.load('./SwaggerDefinitions.yaml');
 
@@ -54,6 +30,7 @@ app.use(function (req, res, next) {
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 app.use('/user', customerRouter);
+app.use('/owner', ownerRouter);
 app.use('/restaurant', restaurantRouter);
 app.use('/menu', menuRouter);
 app.use('/order', orderRouter);

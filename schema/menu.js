@@ -18,6 +18,15 @@ const get = yup.object({
     .required('Must specify a menu ID'),
 });
 
+const add = yup.object({
+  name: yup.string().required('Menu must supply a name'),
+  main_course: yup.array(),
+  dessert: yup.array(),
+  sides: yup.array(),
+  drinks: yup.array(),
+});
+
 module.exports = {
   get,
+  add,
 };

@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const Restaurant = require('../models/Restaurant');
-const Menu = require('../models/Menu');
+const { RestaurantOwner } = require('../models/User');
 
 const validateResource = require('../middleware/validateResource');
 
@@ -16,22 +16,35 @@ router.get('/', (req, res) => {
   });
 });
 
-router.post('/add', validateResource(schema.add), async (req, res) => {
-  try {
-    let r = await new Restaurant({
-      name: req.body.name,
-      genre: req.body.genre,
-    }).save();
-    return res.json('Restaurant Added');
-  } catch (e) {
-    switch (e.code) {
-      case 11000:
-        // Duplicate Restaurant
-        return res.status(400).json('Restaurant details must be unique');
+router.post(
+  '/add/:ownerEmail',
+  validateResource(schema.add),
+  async (req, res) => {
+    console.log(req.body);
+    try {
+      let owner = await RestaurantOwner.findOne({
+        email: req.params.ownerEmail,
+      });
+
+      await new Restaurant({
+        name: req.body.name,
+        genre: req.body.genre,
+        menu: req.body.menu,
+        type: req.body.type,
+        owner: owner._id,
+      }).save();
+      return res.json('Restaurant Added');
+    } catch (e) {
+      console.log(e);
+      switch (e.code) {
+        case 11000:
+          // Duplicate Restaurant
+          return res.status(400).json('Restaurant details must be unique');
+      }
+      return res.status(500).json(e);
     }
-    return res.status(500).json(e);
   }
-});
+);
 
 router.delete(
   '/:restaurantId',

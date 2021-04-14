@@ -22,6 +22,12 @@ tags:
 schemes:
   - 'https'
 paths:
+  /ping:
+    get:
+      summary: 'Ping the API to see if it is available'
+      responses:
+        '200':
+          description: 'API is available'
   /customer/{id}:
     get:
       summary: 'Retrieve a customer from the database using their _id'
