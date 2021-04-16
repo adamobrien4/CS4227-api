@@ -46,19 +46,23 @@ router.post(
         email: req.params.ownerEmail,
       });
 
-      let menu = await new Menu({
-        name: req.body.name,
-        main_course: main,
-        dessert: dessert,
-        sides: sides,
-        drinks: drinks,
-      }).save();
+      let rest = await Restaurant.findOne({
+        owner: owner._id,
+      });
 
-      await Restaurant.findOneAndUpdate(
-        { owner: owner._id },
-        { $set: { menu: menu._id } },
-        { useFindAndModify: true }
-      );
+      var query = { restaurant: rest._id },
+        update = {
+          name: req.body.name,
+          main_course: main,
+          dessert: dessert,
+          sides: sides,
+          drinks: drinks,
+          restaurant: rest._id,
+        },
+        options = { upsert: true, new: true, setDefaultsOnInsert: true };
+
+      // Find the document
+      await Menu.findOneAndUpdate(query, update, options);
       return res.json('Menu Added');
     } catch (e) {
       console.log(e);

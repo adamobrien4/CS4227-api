@@ -29,7 +29,14 @@ const User = mongoose.model(
 );
 
 const Customer = User.discriminator('customer', new Schema({}));
-const RestaurantOwner = User.discriminator('restaurantOwner', new Schema({}));
+const RestaurantOwner = User.discriminator(
+  'restaurantOwner',
+  new Schema({
+    restaurant: {
+      type: mongoose.Types.ObjectId,
+    },
+  })
+);
 const DeliveryDriver = User.discriminator('driver', new Schema({}));
 
 module.exports = {

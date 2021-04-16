@@ -26,13 +26,19 @@ router.post(
         email: req.params.ownerEmail,
       });
 
-      await new Restaurant({
+      let rest = await new Restaurant({
         name: req.body.name,
         genre: req.body.genre,
         menu: req.body.menu,
         type: req.body.type,
         owner: owner._id,
       }).save();
+
+      await RestaurantOwner.findOneAndUpdate(
+        { _id: owner._id },
+        { restaurant: rest._id }
+      );
+
       return res.json('Restaurant Added');
     } catch (e) {
       console.log(e);
